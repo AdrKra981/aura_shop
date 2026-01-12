@@ -3,8 +3,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text
 
 from app.core.database import get_db
+from app.modules.users.router import router as users_router
 
 app = FastAPI(title="Aura Shop API")
+
+app.include_router(users_router)
 
 @app.get("/health")
 def health_check():
