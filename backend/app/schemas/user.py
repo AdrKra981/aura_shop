@@ -1,3 +1,4 @@
+from app.models.user import UserRole
 import uuid
 from datetime import datetime
 
@@ -16,6 +17,7 @@ class UserRead(UserBase):
     id: uuid.UUID
     is_active: bool
     is_admin: bool
+    role: UserRole
     created_at: datetime
 
     class Config:
