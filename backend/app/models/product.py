@@ -1,3 +1,4 @@
+from sqlalchemy.orm._orm_constructors import relationship
 import uuid
 from decimal import Decimal
 
@@ -30,4 +31,13 @@ class Product(
         Boolean,
         default=True,
         nullable=False,
+    )
+
+    category_id: Mapped[str] = mapped_column(
+        String(36),
+        nullable=False,
+    )
+    category: Mapped["Category"] = relationship(
+        "Category",
+        back_populates="products",
     )

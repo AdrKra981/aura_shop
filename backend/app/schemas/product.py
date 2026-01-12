@@ -5,6 +5,7 @@ class ProductBase(BaseModel):
     name: str = Field(..., max_length=100)
     description: Optional[str]
     price: float
+    category_id: str
     stock: int = 0
 
 class ProductCreate(ProductBase):
