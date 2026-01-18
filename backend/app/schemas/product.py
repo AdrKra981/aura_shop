@@ -10,7 +10,11 @@ class ProductBase(BaseModel):
     stock: int = 0
 
 class ProductCreate(ProductBase):
-    pass
+    name: str 
+    description: Optional[str]
+    price: int
+    category_id: UUID
+    stock: int = 0
 
 class ProductRead(BaseModel):
     id: UUID
@@ -22,3 +26,11 @@ class ProductRead(BaseModel):
 
     class Config:
         from_attributes = True
+
+class ProductUpdate(BaseModel):
+    name: str | None = None
+    description: str | None = None
+    price: int | None = None
+    stock: int | None = None
+    category_id: UUID | None = None
+    is_active: bool | None = None

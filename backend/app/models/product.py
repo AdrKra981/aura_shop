@@ -1,3 +1,4 @@
+from sqlalchemy import CheckConstraint
 from sqlalchemy import Integer
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm._orm_constructors import relationship
@@ -16,6 +17,11 @@ class Product(
     TimestampMixin,
 ):
     __tablename__ = "products"
+
+    __table_args__ = (
+        CheckConstraint("price > 0", name="price_check"),
+        CheckConstraint("stock >= 0", name="stock_check"),
+    )
 
     id: Mapped[PG_UUID] = mapped_column(
         PG_UUID(as_uuid=True),
