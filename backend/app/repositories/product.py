@@ -17,6 +17,12 @@ class ProductRepository:
         result = await self.session.execute(stmt)
         return result.scalar_one_or_none()
 
+    async def get_by_category(self, category_id):
+        result = await self.session.execute(
+            select(Product).where(Product.category_id == category_id)
+        )
+        return result.scalars().all()
+
     async def create(self, product: Product) -> Product:
         self.session.add(product)
         await self.session.commit()

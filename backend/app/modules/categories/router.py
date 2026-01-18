@@ -1,3 +1,5 @@
+from app.schemas.category import CategoryUpdate
+from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List
@@ -45,3 +47,49 @@ async def get_category(category_id: str, db: AsyncSession = Depends(get_db)):
     if not category:
         raise HTTPException(status_code=404, detail="Category not found")
     return category
+
+@router.post(
+    "/",
+    response_model=CategoryRead,
+    status_code=status.HTTP_201_CREATED,
+    dependencies=[Depends(require_admin)],
+)
+async def create_category(
+    data: CategoryCreate,
+    session: AsyncSession = Depends(get_db),
+):
+    service = CategoryService(session)
+    return await service.create(data)   
+
+@router.put(
+    "/{category_id}",
+    response_model=CategoryRead,
+    dependencies=[Depends(require_admin)],
+)
+async def update_category(
+    category_id: UUID,
+    data: CategoryUpdate,
+    session: AsyncSession = Depends(get_db),
+):
+    service = CategoryService(session)
+    try:
+        return await service.update(category_id, data)
+    except ValueError:
+        raise HTTPException(status_code=404, detail="Category not found")
+
+@router.delete(
+    "/{category_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    dependencies=[Depends(require_admin)],
+)
+async def delete_category(
+    category_id: UUID,
+    session: AsyncSession = Depends(get_db),
+):
+    service = CategoryService(session)
+    try:
+        await service.delete(category_id)
+    except ValueError:
+        raise HTTPException(status_code=404, detail="Category not found")
+
+

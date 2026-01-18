@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field
 from typing import Optional
+from uuid import UUID
 
 class ProductBase(BaseModel):
     name: str = Field(..., max_length=100)
@@ -11,10 +12,13 @@ class ProductBase(BaseModel):
 class ProductCreate(ProductBase):
     pass
 
-class ProductRead(ProductBase):
-    id: str
-    created_at: Optional[str]
-    updated_at: Optional[str]
+class ProductRead(BaseModel):
+    id: UUID
+    name: str
+    description: str | None
+    price: int
+    stock: int
+    category_id: UUID
 
     class Config:
         from_attributes = True

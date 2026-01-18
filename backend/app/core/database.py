@@ -1,3 +1,6 @@
+import uuid
+from sqlalchemy.dialects.postgresql import UUID as PG_UUID
+
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
     async_sessionmaker,
@@ -14,7 +17,7 @@ class Base(DeclarativeBase):
 
 engine = create_async_engine(
     settings.DATABASE_URL,
-    echo=True,  # log SQL queries (great for learning)
+    echo=True,  
 )
 
 AsyncSessionLocal = async_sessionmaker(
@@ -26,3 +29,4 @@ AsyncSessionLocal = async_sessionmaker(
 async def get_db() -> AsyncSession:
     async with AsyncSessionLocal() as session:
         yield session
+
