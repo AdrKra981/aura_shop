@@ -1,1 +1,24 @@
 docker-compose.yml
+
+# Python
+__pycache__/
+*.py[cod]
+.env
+.venv/
+.env.*
+
+# Alembic
+alembic/versions/__pycache__/
+
+# Node / frontend
+node_modules/
+dist/
+build/
+.vite/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+*.log
