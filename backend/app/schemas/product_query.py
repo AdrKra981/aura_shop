@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field
 from uuid import UUID
+from typing import Literal
 
 
 class ProductQueryParams(BaseModel):
@@ -11,5 +12,4 @@ class ProductQueryParams(BaseModel):
     max_price: int | None = None
     search: str | None = None
 
-    sort: str = "created_at"
-    order: str = "desc"
+    sort: Literal["price_asc", "price_desc", "newest"] = "newest"

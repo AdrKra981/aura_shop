@@ -6,12 +6,12 @@ from typing import List, Optional, Tuple
 from app.schemas.product_query import ProductQueryParams
 from sqlalchemy import func
 
-ALLOWED_SORTS = [
-    "name",
-    "price",
-    "created_at",
-    "updated_at",
-]
+# Maps combined sort strings to (column, direction)
+SORT_OPTIONS = {
+    "price_asc": (Product.price, "asc"),
+    "price_desc": (Product.price, "desc"),
+    "newest": (Product.created_at, "desc"),
+}
 
 class ProductRepository:
     def __init__(self, session: AsyncSession):
@@ -40,15 +40,10 @@ class ProductRepository:
         if params.search:
             stmt = stmt.where(Product.name.ilike(f"%{params.search}%"))
 
-        sort_column = getattr(Product, params.sort, Product.created_at)
-        if sort_column not in ALLOWED_SORTS:
-            sort_column = Product.created_at
-
-        if params.order not in ["asc", "desc"]:
-            params.order = "asc"
+        sort_column, direction = SORT_OPTIONS.get(params.sort, (Product.created_at, "desc"))
 
         stmt = stmt.order_by(
-            sort_column.asc() if params.order == "asc" else sort_column.desc()
+            sort_column.asc() if direction == "asc" else sort_column.desc()
         )
 
         count_stmt = select(func.count()).select_from(stmt.subquery())
