@@ -2,7 +2,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 from uuid import UUID
-from app.models.order import Order, OrderItem
+from app.models.order import Order
 
 
 class OrderRepository:

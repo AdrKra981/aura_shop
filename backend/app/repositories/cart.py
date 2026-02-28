@@ -2,6 +2,7 @@ from app.models import CartItem
 from sqlalchemy.orm import selectinload
 from app.models.cart import Cart
 from sqlalchemy.ext.asyncio import AsyncSession
+import uuid
 
 class CartRepository:
     def __init__(self, session: AsyncSession):
